@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Car } from '@prisma/client'
+import { Car, Prisma } from '@prisma/client'
 import { PrismaService } from 'src/prisma.service'
-import { CreateCarDto } from './dto/create-car.dto'
 import { UpdateCarDto } from './dto/update-car.dto'
 
 @Injectable()
@@ -12,12 +11,12 @@ export class CarsService {
     return this.db.car.findMany()
   }
 
-  car(id: number) {
-    return `This action returns a #${id} car`
+  car(carWhereUniqueInput: Prisma.CarWhereUniqueInput): Promise<Car> {
+    return this.db.car.findUnique({ where: carWhereUniqueInput })
   }
 
-  createCar(createCarDto: CreateCarDto) {
-    return 'This action adds a new car'
+  createCar(data: Prisma.CarCreateInput): Promise<Car> {
+    return this.db.car.create({ data })
   }
 
   updateCar(id: number, updateCarDto: UpdateCarDto) {

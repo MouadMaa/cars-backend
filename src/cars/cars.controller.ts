@@ -7,8 +7,8 @@ import {
   Param,
   Delete,
 } from '@nestjs/common'
+import { Car, Prisma } from '@prisma/client'
 import { CarsService } from './cars.service'
-import { CreateCarDto } from './dto/create-car.dto'
 import { UpdateCarDto } from './dto/update-car.dto'
 
 @Controller('cars')
@@ -22,12 +22,12 @@ export class CarsController {
 
   @Get(':id')
   car(@Param('id') id: string) {
-    return this.carsService.car(+id)
+    return this.carsService.car({ id })
   }
 
   @Post()
-  createCar(@Body() createCarDto: CreateCarDto) {
-    return this.carsService.createCar(createCarDto)
+  createCar(@Body() data: Prisma.CarCreateInput): Promise<Car> {
+    return this.carsService.createCar(data)
   }
 
   @Patch(':id')

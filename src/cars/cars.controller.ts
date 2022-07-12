@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common'
 import { Car, Prisma } from '@prisma/client'
 import { CarsService } from './cars.service'
@@ -15,8 +16,8 @@ export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
   @Get()
-  cars() {
-    return this.carsService.cars()
+  cars(@Query() queryFilter: Prisma.CarAggregateArgs) {
+    return this.carsService.cars(queryFilter)
   }
 
   @Get(':id')

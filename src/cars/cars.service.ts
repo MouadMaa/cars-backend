@@ -6,8 +6,30 @@ import { PrismaService } from 'src/prisma.service'
 export class CarsService {
   constructor(private db: PrismaService) {}
 
-  cars(): Promise<Car[]> {
-    return this.db.car.findMany()
+  cars(queryFilter: any): Promise<Car[]> {
+    const { take, skip, orderBy, searchBy } = queryFilter
+
+    const filter: any = {}
+
+    if (take) filter.take = +take
+    if (skip) filter.skip = +skip
+
+    const sort = orderBy?.split(',')
+    filter.orderBy = sort ? { [sort[0]]: sort[1] } : {} // { createdAt: 'desc' }
+
+    if (searchBy) {
+      const searchArray = searchBy.split('-')
+      filter.where = searchArray.length
+        ? {
+            OR: searchArray.map((search) => {
+              const str = search.split(',')
+              return { [str[0]]: { contains: str[1] } }
+            }),
+          }
+        : {}
+    }
+
+    return this.db.car.findMany(filter)
   }
 
   car(where: Prisma.CarWhereUniqueInput): Promise<Car> {

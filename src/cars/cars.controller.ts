@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common'
 import { Car, Prisma } from '@prisma/client'
 import { CarsService } from './cars.service'
-import { UpdateCarDto } from './dto/update-car.dto'
 
 @Controller('cars')
 export class CarsController {
@@ -31,12 +30,12 @@ export class CarsController {
   }
 
   @Patch(':id')
-  updateCar(@Param('id') id: string, @Body() updateCarDto: UpdateCarDto) {
-    return this.carsService.updateCar(+id, updateCarDto)
+  updateCar(@Param('id') id: string, @Body() data: Prisma.CarUpdateInput) {
+    return this.carsService.updateCar({ id }, data)
   }
 
   @Delete(':id')
   deleteCar(@Param('id') id: string) {
-    return this.carsService.deleteCar(+id)
+    return this.carsService.deleteCar({ id })
   }
 }

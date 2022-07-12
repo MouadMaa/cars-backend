@@ -1,5 +1,4 @@
 import { NotFoundException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 
 export const getAll = async (model: any, queryFilter: any): Promise<any[]> => {
   const { take, skip, orderBy, searchBy } = queryFilter

@@ -7,7 +7,7 @@ import {
   createOne,
   deleteOne,
   updateOne,
-} from 'src/common/api/handler-api'
+} from 'src/common/api/handler-factory.api'
 
 @Injectable()
 export class CarsService {

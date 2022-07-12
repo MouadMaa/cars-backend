@@ -12,7 +12,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp()
     const response = ctx.getResponse<Response>()
     const request = ctx.getRequest<Request>()
-    const status = exception.getStatus()
+    const statusCode = exception.getStatus()
 
     const exceptionResponse = exception.getResponse()
     const errorInfo =
@@ -20,7 +20,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? { message: exceptionResponse }
         : (exceptionResponse as Record<string, unknown>) // casting to Record<string, unknown> prevents errors from casting to type of object
 
-    response.status(status).json({
+    const status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
+
+    response.status(statusCode).json({
+      status,
       ...errorInfo,
       timestamp: new Date().toISOString(),
       path: request.url,

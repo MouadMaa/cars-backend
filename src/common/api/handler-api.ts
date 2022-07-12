@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
 
-export const getAll = (model: any, queryFilter: any): Promise<any[]> => {
+export const getAll = async (model: any, queryFilter: any): Promise<any[]> => {
   const { take, skip, orderBy, searchBy } = queryFilter
 
   const filter: any = {}
@@ -48,21 +49,17 @@ export const updateOne = async (
   where: any,
   data: any,
 ): Promise<any> => {
-  const doc = await model.update({ where, data })
-
-  if (!doc) {
+  try {
+    return await model.update({ where, data })
+  } catch {
     throw new NotFoundException('No document found with that ID')
   }
-
-  return doc
 }
 
 export const deleteOne = async (model: any, where: any): Promise<any> => {
-  const doc = await model.delete({ where })
-
-  if (!doc) {
+  try {
+    return await model.delete({ where })
+  } catch {
     throw new NotFoundException('No document found with that ID')
   }
-
-  return doc
 }

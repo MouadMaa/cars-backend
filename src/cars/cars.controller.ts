@@ -9,7 +9,10 @@ import {
   Query,
 } from '@nestjs/common'
 import { Car, Prisma } from '@prisma/client'
+import { ParseObjectIdPipe } from 'src/common/pipes/parse-object-id.pipe'
 import { CarsService } from './cars.service'
+import { CreateCarDto } from './dto/create-car.dto'
+import { UpdateCarDto } from './dto/update-car.dto'
 
 @Controller('cars')
 export class CarsController {
@@ -21,22 +24,25 @@ export class CarsController {
   }
 
   @Get(':id')
-  car(@Param('id') id: string) {
-    return this.carsService.car({ id })
+  car(@Param('id', ParseObjectIdPipe) id: string) {
+    return this.carsService.car(id)
   }
 
   @Post()
-  createCar(@Body() data: Prisma.CarCreateInput): Promise<Car> {
-    return this.carsService.createCar(data)
+  createCar(@Body() createCarDto: CreateCarDto): Promise<Car> {
+    return this.carsService.createCar(createCarDto)
   }
 
   @Patch(':id')
-  updateCar(@Param('id') id: string, @Body() data: Prisma.CarUpdateInput) {
-    return this.carsService.updateCar({ id }, data)
+  updateCar(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Body() updateCarDto: UpdateCarDto,
+  ) {
+    return this.carsService.updateCar(id, updateCarDto)
   }
 
   @Delete(':id')
-  deleteCar(@Param('id') id: string) {
-    return this.carsService.deleteCar({ id })
+  deleteCar(@Param('id', ParseObjectIdPipe) id: string) {
+    return this.carsService.deleteCar(id)
   }
 }

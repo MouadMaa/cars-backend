@@ -31,8 +31,9 @@ export const getAll = async (
           OR: searchesArray.map((item) => {
             const searchByField = item.split('[')[0]
             const searchByValue = item.split('[')[1].replace(']', '')
-            console.log(searchByField, searchByValue)
-            return { [searchByField]: { contains: searchByValue } }
+            return {
+              [searchByField]: { contains: searchByValue, mode: 'insensitive' },
+            }
           }),
         }
       : {}

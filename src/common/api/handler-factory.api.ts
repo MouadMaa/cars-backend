@@ -1,26 +1,38 @@
 import { NotFoundException } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { FilterQueryDto } from '../dto/filter-query.dto'
 
-export const getAll = async (model: any, queryFilter: any): Promise<any[]> => {
-  const { take, skip, orderBy, searchBy } = queryFilter
+export const getAll = async (
+  model: any,
+  filterQueryDto: FilterQueryDto,
+): Promise<any[]> => {
+  const { take, skip, orderBy, searchBy } = filterQueryDto
 
-  const filter: any = {}
+  const filter: Prisma.CarAggregateArgs = {}
 
   // pagination
-  if (take) filter.take = +take
-  if (skip) filter.skip = +skip
+  if (take) filter.take = Number(take)
+  if (skip) filter.skip = Number(skip)
 
   // order by
-  const sort = orderBy?.split(',')
-  filter.orderBy = sort ? { [sort[0]]: sort[1] } : {} // { createdAt: 'desc' }
+  if (orderBy) {
+    const sortByField = orderBy.split('[')[0]
+    const sortByValue = orderBy.includes('asc') ? 'asc' : 'desc'
+    filter.orderBy = { [sortByField]: sortByValue }
+  } else {
+    filter.orderBy = {} /* Or { createdAt: 'desc' } */
+  }
 
   // string search on given field
   if (searchBy) {
-    const searchArray = searchBy.split('-')
-    filter.where = searchArray.length
+    const searchesArray = searchBy.split(',')
+    filter.where = searchesArray.length
       ? {
-          OR: searchArray.map((search) => {
-            const str = search.split(',')
-            return { [str[0]]: { contains: str[1] } }
+          OR: searchesArray.map((item) => {
+            const searchByField = item.split('[')[0]
+            const searchByValue = item.split('[')[1].replace(']', '')
+            console.log(searchByField, searchByValue)
+            return { [searchByField]: { contains: searchByValue } }
           }),
         }
       : {}

@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common'
 import { Car, Prisma } from '@prisma/client'
+import { FilterQueryDto } from 'src/common/dto/filter-query.dto'
 import { ParseObjectIdPipe } from 'src/common/pipes/parse-object-id.pipe'
 import { CarsService } from './cars.service'
 import { CreateCarDto } from './dto/create-car.dto'
@@ -19,12 +20,12 @@ export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
   @Get()
-  cars(@Query() queryFilter: Prisma.CarAggregateArgs) {
-    return this.carsService.cars(queryFilter)
+  cars(@Query() filterQueryDto: FilterQueryDto): Promise<Car[]> {
+    return this.carsService.cars(filterQueryDto)
   }
 
   @Get(':id')
-  car(@Param('id', ParseObjectIdPipe) id: string) {
+  car(@Param('id', ParseObjectIdPipe) id: string): Promise<Car> {
     return this.carsService.car(id)
   }
 
@@ -37,12 +38,12 @@ export class CarsController {
   updateCar(
     @Param('id', ParseObjectIdPipe) id: string,
     @Body() updateCarDto: UpdateCarDto,
-  ) {
+  ): Promise<Car> {
     return this.carsService.updateCar(id, updateCarDto)
   }
 
   @Delete(':id')
-  deleteCar(@Param('id', ParseObjectIdPipe) id: string) {
+  deleteCar(@Param('id', ParseObjectIdPipe) id: string): Promise<Car> {
     return this.carsService.deleteCar(id)
   }
 }

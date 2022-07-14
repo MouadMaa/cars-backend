@@ -8,7 +8,7 @@ import {
   Delete,
   Query,
 } from '@nestjs/common'
-import { Car, Prisma } from '@prisma/client'
+import { Car } from '@prisma/client'
 import { FilterQueryDto } from 'src/common/dto/filter-query.dto'
 import { ParseObjectIdPipe } from 'src/common/pipes/parse-object-id.pipe'
 import { CarsService } from './cars.service'

@@ -10,11 +10,12 @@ export const getAll = async (
 
   const filter: Prisma.CarAggregateArgs = {}
 
-  // pagination
+  // pagination (?take=2&skip=1)
   if (take) filter.take = Number(take)
   if (skip) filter.skip = Number(skip)
 
   // order by
+  // ?orderBy=name[desc]
   if (orderBy) {
     const sortByField = orderBy.split('[')[0]
     const sortByValue = orderBy.includes('asc') ? 'asc' : 'desc'
@@ -24,6 +25,7 @@ export const getAll = async (
   }
 
   // string search on given field
+  // ?searchBy=name[1],model[2022]
   if (searchBy) {
     const searchesArray = searchBy.split(',')
     filter.where = searchesArray.length

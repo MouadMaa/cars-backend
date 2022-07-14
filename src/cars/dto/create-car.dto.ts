@@ -23,5 +23,5 @@ export class CreateCarDto {
 
   @IsOptional()
   @IsString({ each: true })
-  images: string[]
+  imagesUrl: string[]
 }

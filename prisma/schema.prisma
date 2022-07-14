@@ -18,7 +18,7 @@ model Car {
   price     Float
   desc      String?
   color     String?
-  images    String[]
+  imagesUrl String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

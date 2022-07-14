@@ -22,16 +22,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
 
+    const message =
+      typeof errorInfo.message === 'string'
+        ? [errorInfo.message]
+        : errorInfo.message
+
     if (process.env.NODE_ENV === 'development') {
       response.status(statusCode).json({
         status,
-        ...errorInfo,
+        statusCode: errorInfo.statusCode,
+        error: errorInfo.error,
+        message,
         timestamp: new Date().toISOString(),
         path: request.url,
       })
     } else {
       response.status(statusCode).json({
         status: 'error',
+        statusCode,
+        error: errorInfo.error,
         message: 'Something went very wrong!',
       })
     }

@@ -1,4 +1,9 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
+
+enum FuelType {
+  Diesel = 'Diesel',
+  Gasoline = 'Gasoline',
+}
 
 export class CreateCarDto {
   @IsString()
@@ -16,6 +21,9 @@ export class CreateCarDto {
   @IsOptional()
   @IsString()
   desc?: string
+
+  @IsEnum(FuelType)
+  fuelType: FuelType
 
   @IsOptional()
   @IsString()

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Owner } from '@prisma/client'
 import { PrismaService } from 'src/database/prisma.service'
 import {

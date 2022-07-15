@@ -23,13 +23,13 @@ export class OwnersController {
   constructor(private readonly ownersService: OwnersService) {}
 
   @Get()
-  owners(@Query() filterQueryDto: FilterQueryDto): Promise<Owner[]> {
-    return this.ownersService.owners(filterQueryDto)
+  getAllOwners(@Query() filterQueryDto: FilterQueryDto): Promise<Owner[]> {
+    return this.ownersService.getAllOwners(filterQueryDto)
   }
 
   @Get(':id')
-  owner(@Param('id', ParseObjectIdPipe) id: string): Promise<Owner> {
-    return this.ownersService.owner(id)
+  getOneOwner(@Param('id', ParseObjectIdPipe) id: string): Promise<Owner> {
+    return this.ownersService.getOneOwner(id)
   }
 
   @Post()

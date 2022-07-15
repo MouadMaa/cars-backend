@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { Owner } from '@prisma/client'
 import { PrismaService } from 'src/database/prisma.service'
 import {
@@ -15,12 +15,16 @@ import { UpdateOwnerDto } from './dto/update-owner.dto'
 export class OwnersService {
   constructor(private db: PrismaService) {}
 
-  owners(filterQueryDto: any): Promise<Owner[]> {
+  getAllOwners(filterQueryDto: any): Promise<Owner[]> {
     return getAll(this.db.owner, filterQueryDto)
   }
 
-  owner(id: string): Promise<Owner> {
+  getOneOwner(id: string): Promise<Owner> {
     return getOne(this.db.owner, { id })
+  }
+
+  getOneOwnerByEmail(email: string): Promise<Owner> {
+    return this.db.owner.findUnique({ where: { email } })
   }
 
   createOwner(createOwnerDto: CreateOwnerDto): Promise<Owner> {

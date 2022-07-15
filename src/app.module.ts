@@ -5,9 +5,10 @@ import { AppService } from './app.service'
 import { CarsModule } from './cars/cars.module'
 import { OwnersModule } from './owners/owners.module'
 import { LocationsModule } from './locations/locations.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), CarsModule, OwnersModule, LocationsModule],
+  imports: [ConfigModule.forRoot(), CarsModule, OwnersModule, LocationsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

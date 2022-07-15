@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { Owner } from '@prisma/client'
 import { OwnersService } from 'src/owners/owners.service'
 import { CreateAuthDto } from './dto/create-auth.dto'
 
@@ -20,6 +21,11 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     }
+  }
+
+  async getOwnerProfile(user: any): Promise<Owner> {
+    const owner = await this.ownersService.getOneOwner(user.userId)
+    return { ...owner, password: undefined, status: undefined }
   }
 
   async validateOwner(email: string, pass: string): Promise<any> {

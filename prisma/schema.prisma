@@ -11,17 +11,19 @@ datasource db {
 }
 
 model Car {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  model     String
-  brand     String
-  price     Float
-  fuelType  FuelType
-  desc      String?
-  color     String?
-  imagesUrl String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  model      String
+  brand      String
+  price      Float
+  fuelType   FuelType
+  desc       String?
+  color      String?
+  imagesUrl  String[]
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId String   @unique @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Owner {
@@ -40,6 +42,7 @@ model Location {
   address     String
   desc        String?
   coordinates String[]
+  cars        Car[]
   owner       Owner    @relation(fields: [ownerId], references: [id])
   ownerId     String   @unique @db.ObjectId
   createdAt   DateTime @default(now())

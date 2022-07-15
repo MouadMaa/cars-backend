@@ -6,9 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
   UseInterceptors,
 } from '@nestjs/common'
+import { Owner } from '@prisma/client'
+import { FilterQueryDto } from 'src/common/dto/filter-query.dto'
 import { ResponsesInterceptor } from 'src/common/interceptors/responses.interceptor'
+import { ParseObjectIdPipe } from 'src/common/pipes/parse-object-id.pipe'
 import { OwnersService } from './owners.service'
 import { CreateOwnerDto } from './dto/create-owner.dto'
 import { UpdateOwnerDto } from './dto/update-owner.dto'
@@ -18,28 +22,31 @@ import { UpdateOwnerDto } from './dto/update-owner.dto'
 export class OwnersController {
   constructor(private readonly ownersService: OwnersService) {}
 
-  @Post()
-  create(@Body() createOwnerDto: CreateOwnerDto) {
-    return this.ownersService.create(createOwnerDto)
-  }
-
   @Get()
-  findAll() {
-    return this.ownersService.findAll()
+  owners(@Query() filterQueryDto: FilterQueryDto): Promise<Owner[]> {
+    return this.ownersService.owners(filterQueryDto)
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ownersService.findOne(+id)
+  owner(@Param('id', ParseObjectIdPipe) id: string): Promise<Owner> {
+    return this.ownersService.owner(id)
+  }
+
+  @Post()
+  createOwner(@Body() createOwnerDto: CreateOwnerDto): Promise<Owner> {
+    return this.ownersService.createOwner(createOwnerDto)
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOwnerDto: UpdateOwnerDto) {
-    return this.ownersService.update(+id, updateOwnerDto)
+  updateOwner(
+    @Param('id', ParseObjectIdPipe) id: string,
+    @Body() updateOwnerDto: UpdateOwnerDto,
+  ): Promise<Owner> {
+    return this.ownersService.updateOwner(id, updateOwnerDto)
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ownersService.remove(+id)
+  deleteOwner(@Param('id', ParseObjectIdPipe) id: string): Promise<Owner> {
+    return this.ownersService.deleteOwner(id)
   }
 }

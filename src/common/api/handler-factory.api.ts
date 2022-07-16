@@ -1,14 +1,21 @@
 import { NotFoundException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 import { FilterQueryDto } from '../dto/filter-query.dto'
 
 export const getAll = async (
   model: any,
   filterQueryDto: FilterQueryDto,
+  popOptions?: string[],
 ): Promise<any[]> => {
   const { take, skip, orderBy, searchBy } = filterQueryDto
 
-  const filter: Prisma.CarAggregateArgs = {}
+  const filter: any = {}
+
+  // Include all fields for a specific relation
+  if (popOptions) {
+    const include = {}
+    popOptions.forEach((option) => (include[option] = true))
+    filter.include = include
+  }
 
   // pagination (?take=2&skip=1)
   if (take) filter.take = Number(take)
@@ -44,8 +51,19 @@ export const getAll = async (
   return model.findMany(filter)
 }
 
-export const getOne = async (model: any, where: any): Promise<any> => {
-  const doc = await model.findUnique({ where })
+export const getOne = async (
+  model: any,
+  where: any,
+  popOptions?: string[],
+): Promise<any> => {
+  // Include all fields for a specific relation
+  let include = undefined
+  if (popOptions) {
+    include = {}
+    popOptions.forEach((option) => (include[option] = true))
+  }
+
+  const doc = await model.findUnique({ where, include })
 
   if (!doc) {
     throw new NotFoundException('No document found with that ID')

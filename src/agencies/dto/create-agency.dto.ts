@@ -14,4 +14,7 @@ export class CreateAgencyDto {
   @IsOptional()
   @IsString({ each: true })
   coordinates: string[]
+
+  @IsString()
+  ownerId: string
 }

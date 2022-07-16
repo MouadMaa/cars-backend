@@ -10,10 +10,10 @@ import { AuthModule } from './auth/auth.module'
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    CarsModule,
     OwnersModule,
-    AgenciesModule,
     AuthModule,
+    AgenciesModule,
+    CarsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

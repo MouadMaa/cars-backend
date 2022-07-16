@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsEnum, IsOptional, IsPositive, IsString } from 'class-validator'
 
 enum FuelType {
   Diesel = 'Diesel',
@@ -15,7 +15,7 @@ export class CreateCarDto {
   @IsString()
   brand: string
 
-  @IsNumber()
+  @IsPositive()
   price: number
 
   @IsOptional()
@@ -32,4 +32,7 @@ export class CreateCarDto {
   @IsOptional()
   @IsString({ each: true })
   imagesUrl: string[]
+
+  @IsString()
+  agencyId: string
 }

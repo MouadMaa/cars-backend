@@ -10,24 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Car {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  model     String
-  brand     String
-  price     Float
-  fuelType  FuelType
-  desc      String?
-  color     String?
-  imagesUrl String[]
-  agency    Agency   @relation(fields: [agencyId], references: [id])
-  agencyId  String   @unique @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([name, model, brand])
-}
-
 model Owner {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   name     String
@@ -50,6 +32,24 @@ model Agency {
   updatedAt   DateTime @updatedAt
 
   @@unique([name, address])
+}
+
+model Car {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  model     String
+  brand     String
+  price     Float
+  fuelType  FuelType
+  desc      String?
+  color     String?
+  imagesUrl String[]
+  agency    Agency   @relation(fields: [agencyId], references: [id])
+  agencyId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name, model, brand])
 }
 
 enum FuelType {

@@ -49,7 +49,7 @@ model Car {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([name, model, brand])
+  @@unique([name, model, brand])
 }
 
 enum FuelType {

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -14,6 +15,7 @@ import { ResponsesInterceptor } from 'src/common/interceptors/responses.intercep
 import { AuthService } from './auth.service'
 import { LoginAuthDto } from './dto/login-auth.dto'
 import { SignupAuthDto } from './dto/signup-auth.dto'
+import { UpdateAuthDto } from './dto/update-auth.dto'
 
 @Controller('auth')
 @UseInterceptors(ResponsesInterceptor)
@@ -36,5 +38,14 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async getProfile(@Request() req: any): Promise<Owner> {
     return this.authService.getOwnerProfile(req.user)
+  }
+
+  @Patch('profile')
+  @UseGuards(JwtAuthGuard)
+  async updateProfile(
+    @Request() req: any,
+    @Body() updateAuthDto: UpdateAuthDto,
+  ): Promise<Owner> {
+    return this.authService.updateOwnerProfile(req.user, updateAuthDto)
   }
 }

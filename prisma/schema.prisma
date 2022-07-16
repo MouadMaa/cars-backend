@@ -11,31 +11,33 @@ datasource db {
 }
 
 model Car {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  model      String
-  brand      String
-  price      Float
-  fuelType   FuelType
-  desc       String?
-  color      String?
-  imagesUrl  String[]
-  location   Location @relation(fields: [locationId], references: [id])
-  locationId String   @unique @db.ObjectId
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  model     String
+  brand     String
+  price     Float
+  fuelType  FuelType
+  desc      String?
+  color     String?
+  imagesUrl String[]
+  agency    Agency   @relation(fields: [agencyId], references: [id])
+  agencyId  String   @unique @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name, model, brand])
 }
 
 model Owner {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   phone    String
-  email    String    @unique
+  email    String  @unique
   password String
-  location Location?
+  agency   Agency?
 }
 
-model Location {
+model Agency {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   address     String

@@ -23,13 +23,13 @@ export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
   @Get()
-  cars(@Query() filterQueryDto: FilterQueryDto): Promise<Car[]> {
-    return this.carsService.cars(filterQueryDto)
+  getCars(@Query() filterQueryDto: FilterQueryDto): Promise<Car[]> {
+    return this.carsService.getCars(filterQueryDto)
   }
 
   @Get(':id')
-  car(@Param('id', ParseObjectIdPipe) id: string): Promise<Car> {
-    return this.carsService.car(id)
+  getCar(@Param('id', ParseObjectIdPipe) id: string): Promise<Car> {
+    return this.carsService.getCar(id)
   }
 
   @Post()

@@ -15,15 +15,15 @@ import { UpdateOwnerDto } from './dto/update-owner.dto'
 export class OwnersService {
   constructor(private db: PrismaService) {}
 
-  getAllOwners(filterQueryDto: any): Promise<Owner[]> {
+  getOwners(filterQueryDto: any): Promise<Owner[]> {
     return getAll(this.db.owner, filterQueryDto)
   }
 
-  getOneOwner(id: string): Promise<Owner> {
+  getOwner(id: string): Promise<Owner> {
     return getOne(this.db.owner, { id })
   }
 
-  getOneOwnerByEmail(email: string): Promise<Owner> {
+  getOwnerByEmail(email: string): Promise<Owner> {
     return this.db.owner.findUnique({ where: { email } })
   }
 

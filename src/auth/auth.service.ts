@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   async validateOwner(email: string, password: string): Promise<any> {
-    const owner = await this.ownersService.getOneOwnerByEmail(email)
+    const owner = await this.ownersService.getOwnerByEmail(email)
     if (!owner) return null
 
     const validPassword = await verify(owner.password, password)
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   async getOwnerProfile(user: any): Promise<Owner> {
-    const owner = await this.ownersService.getOneOwner(user.userId)
+    const owner = await this.ownersService.getOwner(user.userId)
     return { ...owner, password: undefined }
   }
 

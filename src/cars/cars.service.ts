@@ -15,11 +15,11 @@ import { UpdateCarDto } from './dto/update-car.dto'
 export class CarsService {
   constructor(private db: PrismaService) {}
 
-  cars(filterQueryDto: any): Promise<Car[]> {
+  getCars(filterQueryDto: any): Promise<Car[]> {
     return getAll(this.db.car, filterQueryDto)
   }
 
-  car(id: string): Promise<Car> {
+  getCar(id: string): Promise<Car> {
     return getOne(this.db.car, { id })
   }
 

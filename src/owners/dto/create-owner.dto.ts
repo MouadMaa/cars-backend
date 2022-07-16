@@ -11,8 +11,6 @@ export class CreateOwnerDto {
   email: string
 
   @IsString()
-  @MinLength(8, {
-    message: 'A password must have more or equal then 8 characters',
-  })
+  @MinLength(8)
   password: string
 }

@@ -32,7 +32,6 @@ model Owner {
   phone    String
   email    String    @unique
   password String
-  status   Boolean   @default(false)
   location Location?
 }
 

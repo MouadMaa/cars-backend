@@ -1,6 +1,6 @@
 import { IsEmail, IsPhoneNumber, IsString, MinLength } from 'class-validator'
 
-export class CreateAuthDto {
+export class SignupAuthDto {
   @IsString()
   name: string
 
@@ -11,8 +11,6 @@ export class CreateAuthDto {
   email: string
 
   @IsString()
-  @MinLength(8, {
-    message: 'A password must have more or equal then 8 characters',
-  })
+  @MinLength(8)
   password: string
 }

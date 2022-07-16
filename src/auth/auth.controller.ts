@@ -12,7 +12,8 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard'
 import { LocalAuthGuard } from 'src/common/guards/local-auth.guard'
 import { ResponsesInterceptor } from 'src/common/interceptors/responses.interceptor'
 import { AuthService } from './auth.service'
-import { CreateAuthDto } from './dto/create-auth.dto'
+import { LoginAuthDto } from './dto/login-auth.dto'
+import { SignupAuthDto } from './dto/signup-auth.dto'
 
 @Controller('auth')
 @UseInterceptors(ResponsesInterceptor)
@@ -20,13 +21,14 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
-  async signup(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.signup(createAuthDto)
+  async signup(@Body() signupAuthDto: SignupAuthDto) {
+    return this.authService.signup(signupAuthDto)
   }
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  async login(@Request() req: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async login(@Request() req: any, @Body() _loginAuthDto: LoginAuthDto) {
     return this.authService.login(req.user)
   }
 

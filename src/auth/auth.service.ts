@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Owner } from '@prisma/client'
+import { hash, verify } from 'argon2'
 import { OwnersService } from 'src/owners/owners.service'
-import { CreateAuthDto } from './dto/create-auth.dto'
+import { SignupAuthDto } from './dto/signup-auth.dto'
 
 @Injectable()
 export class AuthService {
@@ -11,9 +12,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(createAuthDto: CreateAuthDto): Promise<any> {
-    const user = await this.ownersService.createOwner(createAuthDto)
-    return this.login(user)
+  async signup(createAuthDto: SignupAuthDto): Promise<any> {
+    createAuthDto.password = await hash(createAuthDto.password)
+    const owner = await this.ownersService.createOwner(createAuthDto)
+    return this.login(owner)
   }
 
   async login(user: any): Promise<any> {
@@ -25,14 +27,16 @@ export class AuthService {
 
   async getOwnerProfile(user: any): Promise<Owner> {
     const owner = await this.ownersService.getOneOwner(user.userId)
-    return { ...owner, password: undefined, status: undefined }
+    return { ...owner, password: undefined }
   }
 
-  async validateOwner(email: string, pass: string): Promise<any> {
+  async validateOwner(email: string, password: string): Promise<any> {
     const owner = await this.ownersService.getOneOwnerByEmail(email)
-    if (owner && owner.password === pass) {
-      return owner
-    }
-    return null
+    if (!owner) return null
+
+    const validPassword = await verify(owner.password, password)
+    if (!validPassword) return null
+
+    return owner
   }
 }

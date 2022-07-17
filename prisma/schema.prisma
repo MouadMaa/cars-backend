@@ -20,39 +20,45 @@ model Owner {
 }
 
 model Agency {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   address     String
   desc        String?
   coordinates String[]
-  cars        Car[]
-  owner       Owner    @relation(fields: [ownerId], references: [id])
-  ownerId     String   @unique @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  vehicles    Vehicle[]
+  owner       Owner     @relation(fields: [ownerId], references: [id])
+  ownerId     String    @unique @db.ObjectId
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@unique([name, address])
 }
 
-model Car {
+model Vehicle {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   model     String
   brand     String
+  Type      Type     @default(Car)
   price     Float
-  fuelType  FuelType
+  priceBy   PriceBy  @default(Day)
+  details   Json?
   desc      String?
-  color     String?
   imagesUrl String[]
   agency    Agency   @relation(fields: [agencyId], references: [id])
   agencyId  String   @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@unique([name, model, brand])
 }
 
-enum FuelType {
-  Diesel
-  Gasoline
+enum Type {
+  Car
+  Motorcycle
+}
+
+enum PriceBy {
+  Month
+  Week
+  Day
+  Hour
 }

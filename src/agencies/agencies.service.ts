@@ -20,7 +20,7 @@ export class AgenciesService {
   }
 
   getAgency(id: string): Promise<Agency> {
-    return getOne(this.db.agency, { id }, ['owner', 'cars'])
+    return getOne(this.db.agency, { id }, ['owner', 'vehicles'])
   }
 
   createAgency(createAgencyDto: CreateAgencyDto): Promise<Agency> {

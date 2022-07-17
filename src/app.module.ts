@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { CarsModule } from './cars/cars.module'
+import { VehiclesModule } from './vehicles/vehicles.module'
 import { OwnersModule } from './owners/owners.module'
 import { AgenciesModule } from './agencies/agencies.module'
 import { AuthModule } from './auth/auth.module'
@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module'
     OwnersModule,
     AuthModule,
     AgenciesModule,
-    CarsModule,
+    VehiclesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

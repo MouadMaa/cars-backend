@@ -1,6 +1,6 @@
 ## Description
 
-Backend Cars
+Backend Vehicles
 
 ## Installation
 
@@ -20,14 +20,14 @@ Exp:
 
 NODE_ENV='development'
 
-DATABASE_URL='mongodb://localhost:27017/cars'
+DATABASE_URL='mongodb://localhost:27017/vehicles'
 
 ## Setup Database
 
 ### Choice 1 - With Mongodb Atlas
 
 I prefer to connect database with mongodb atlas Exp:
-(DATABASE*URL='mongodb+srv://\*\**:\_\*\*@\*\*\*/cars?retryWrites=true&w=majority')
+(DATABASE\*URL='mongodb+srv://\*\*\*:\_\*\*@\*\*\*/vehicles?retryWrites=true&w=majority')
 
 ### Choice 2 - With Docker
 

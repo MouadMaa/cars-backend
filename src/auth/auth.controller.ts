@@ -8,7 +8,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
-import { Owner } from '@prisma/client'
+import { Agency } from '@prisma/client'
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard'
 import { LocalAuthGuard } from 'src/common/guards/local-auth.guard'
 import { ResponsesInterceptor } from 'src/common/interceptors/responses.interceptor'
@@ -36,8 +36,8 @@ export class AuthController {
 
   @Get('profile')
   @UseGuards(JwtAuthGuard)
-  async getProfile(@Request() req: any): Promise<Owner> {
-    return this.authService.getOwnerProfile(req.user)
+  async getProfile(@Request() req: any): Promise<Agency> {
+    return this.authService.getAgencyProfile(req.user)
   }
 
   @Patch('profile')
@@ -45,7 +45,7 @@ export class AuthController {
   async updateProfile(
     @Request() req: any,
     @Body() updateAuthDto: UpdateAuthDto,
-  ): Promise<Owner> {
-    return this.authService.updateOwnerProfile(req.user, updateAuthDto)
+  ): Promise<Agency> {
+    return this.authService.updateAgencyProfile(req.user, updateAuthDto)
   }
 }

@@ -1,8 +1,8 @@
 import { Strategy } from 'passport-local'
 import { PassportStrategy } from '@nestjs/passport'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { Owner } from '@prisma/client'
 import { AuthService } from '../auth.service'
+import { Agency } from '@prisma/client'
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -10,11 +10,11 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({ usernameField: 'email' })
   }
 
-  async validate(email: string, password: string): Promise<Owner> {
-    const owner = await this.authService.validateOwner(email, password)
-    if (!owner) {
-      throw new BadRequestException('Email or password not valid')
+  async validate(email: string, password: string): Promise<Agency> {
+    const user = await this.authService.validateUser(email, password)
+    if (!user) {
+      throw new BadRequestException('email or password not valid')
     }
-    return owner
+    return user
   }
 }

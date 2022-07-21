@@ -1,6 +1,25 @@
-import { IsOptional, IsString } from 'class-validator'
+import {
+  IsEmail,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  MinLength,
+} from 'class-validator'
 
 export class CreateAgencyDto {
+  @IsString()
+  username: string
+
+  @IsPhoneNumber()
+  phone: string
+
+  @IsEmail()
+  email: string
+
+  @IsString()
+  @MinLength(8)
+  password: string
+
   @IsString()
   name: string
 
@@ -14,7 +33,4 @@ export class CreateAgencyDto {
   @IsOptional()
   @IsString({ each: true })
   coordinates: string[]
-
-  @IsString()
-  ownerId: string
 }

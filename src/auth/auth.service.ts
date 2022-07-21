@@ -1,23 +1,23 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { Owner } from '@prisma/client'
+import { Agency } from '@prisma/client'
 import { hash, verify } from 'argon2'
-import { OwnersService } from 'src/owners/owners.service'
+import { AgenciesService } from 'src/agencies/agencies.service'
 import { SignupAuthDto } from './dto/signup-auth.dto'
 import { UpdateAuthDto } from './dto/update-auth.dto'
 
 @Injectable()
 export class AuthService {
   constructor(
-    private ownersService: OwnersService,
+    private agenciesService: AgenciesService,
     private jwtService: JwtService,
   ) {}
 
   async signup(createAuthDto: SignupAuthDto): Promise<any> {
     createAuthDto.password = await hash(createAuthDto.password)
     createAuthDto.email = createAuthDto.email.toLowerCase()
-    const owner = await this.ownersService.createOwner(createAuthDto)
-    return this.login(owner)
+    const user = await this.agenciesService.createAgency(createAuthDto)
+    return this.login(user)
   }
 
   async login(user: any): Promise<any> {
@@ -27,39 +27,39 @@ export class AuthService {
     }
   }
 
-  async validateOwner(email: string, password: string): Promise<any> {
-    const owner = await this.ownersService.getOwnerByEmail(email)
-    if (!owner) return null
+  async validateUser(email: string, password: string): Promise<Agency | null> {
+    const user = await this.agenciesService.getAgencyByEmail(email)
+    if (!user) return null
 
-    const validPassword = await verify(owner.password, password)
+    const validPassword = await verify(user.password, password)
     if (!validPassword) return null
-    return owner
+    return user
   }
 
-  async getOwnerProfile(user: any): Promise<Owner> {
-    const owner = await this.ownersService.getOwner(user.userId)
-    return { ...owner, password: undefined }
+  async getAgencyProfile(userReq: any): Promise<Agency> {
+    const agency = await this.agenciesService.getAgency(userReq.userId)
+    return { ...agency, password: undefined }
   }
 
-  async updateOwnerProfile(
-    user: any,
+  async updateAgencyProfile(
+    userReq: any,
     updateAuthDto: UpdateAuthDto,
-  ): Promise<Owner> {
+  ): Promise<Agency> {
     if (updateAuthDto.password) {
       if (!updateAuthDto.newPassword) {
         throw new BadRequestException('Field new password is missing')
       }
-      if (!(await this.validateOwner(user.email, updateAuthDto.password))) {
+      if (!(await this.validateUser(userReq.email, updateAuthDto.password))) {
         throw new BadRequestException('Your current password is wrong')
       }
       updateAuthDto.password = await hash(updateAuthDto.newPassword)
       updateAuthDto.newPassword = undefined
     }
 
-    const owner = await this.ownersService.updateOwner(
-      user.userId,
+    const agency = await this.agenciesService.updateAgency(
+      userReq.userId,
       updateAuthDto,
     )
-    return { ...owner, password: undefined }
+    return { ...agency, password: undefined }
   }
 }

@@ -20,7 +20,11 @@ export class AgenciesService {
   }
 
   getAgency(id: string): Promise<Agency> {
-    return getOne(this.db.agency, { id }, ['owner', 'vehicles'])
+    return getOne(this.db.agency, { id }, ['vehicles'])
+  }
+
+  getAgencyByEmail(email: string): Promise<Agency> {
+    return this.db.agency.findUnique({ where: { email } })
   }
 
   createAgency(createAgencyDto: CreateAgencyDto): Promise<Agency> {

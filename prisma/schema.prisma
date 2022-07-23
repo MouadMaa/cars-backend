@@ -38,8 +38,24 @@ model Vehicle {
   details   Json?
   desc      String?
   imagesUrl String[]
+  orders    Order[]
   agency    Agency      @relation(fields: [agencyId], references: [id])
   agencyId  String      @db.ObjectId
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Order {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  phone     String
+  email     String
+  status    OrderStatus @default(Opened)
+  startDate DateTime
+  endDate   DateTime
+  duration  Int
+  vehicle   Vehicle     @relation(fields: [vehicleId], references: [id])
+  vehicleId String      @db.ObjectId
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 }
@@ -54,4 +70,10 @@ enum PriceBy {
   Week
   Day
   Hour
+}
+
+enum OrderStatus {
+  Opened
+  Accepted
+  Refused
 }
